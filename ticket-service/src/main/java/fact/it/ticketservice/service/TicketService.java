@@ -34,7 +34,7 @@ public class TicketService {
     }
 
     public TicketResponse getTicketByTicketCode(String ticketCode) {
-        Ticket ticket = ticketRepository.findByTicketCode(ticketCode).orElseThrow();
+        Ticket ticket = ticketRepository.findByTicketCode(ticketCode).orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
         return mapToTicketResponse(ticket);
     }
 

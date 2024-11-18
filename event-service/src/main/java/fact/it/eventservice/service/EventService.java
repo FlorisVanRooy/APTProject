@@ -35,7 +35,7 @@ public class EventService {
     }
 
     public EventResponse getEventByEventCode(String eventCode) {
-        Event event = eventRepository.findByEventCode(eventCode).orElseThrow();
+        Event event = eventRepository.findByEventCode(eventCode).orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
         return mapToEventResponse(event);
     }
