@@ -1,0 +1,74 @@
+services:
+ mongo-tickets:
+  image: mongo:latest
+  ports:
+    - 27017:27017
+  volumes:
+    - mongodb_ticket_data:/data/db
+    
+ mysql-registration:
+  image: mysql:latest
+  ports:
+    - 3306:3306
+  volumes:
+    - mysql_registration_data:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: abc123
+    
+ mysql-events:
+  image: mysql:latest
+  ports:
+    - 3307:3306
+  volumes:
+    - mysql_inventory_data:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: abc123
+    
+ ticket-service:
+  depends_on:
+    - mongo-tickets
+  image: florisvanrooy/ticket-service
+  ports:
+    - 8082:8082
+  links:
+    - mongo-tickets
+  environment:
+   MONGODB_PORT: 27017
+   MONGODB_HOST: mongo-tickets
+   
+ event-service:
+  depends_on:
+    - mysql-events
+  image: florisvanrooy/event-service
+  ports:
+    - 8080:8080
+  links:
+    - mysql-events
+  environment:
+   MYSQL_DB_USERNAME: root
+   MYSQL_DB_PASSWORD: abc123
+   MYSQL_DB_HOST: mysql-events
+   MYSQL_DB_PORT: 3306
+
+ registration-service:
+  depends_on:
+    - ticket-service
+    - event-service
+  image: florisvanrooy/registration-service
+  ports:
+    - 8081:8081
+  links:
+    - ticket-service
+    - event-service
+  environment:
+   EVENT_SERVICE_BASEURL: event-service:8080
+   TICKET_SERVICE_BASEURL: ticket-service:8082
+   MYSQL_DB_USERNAME: root
+   MYSQL_DB_PASSWORD: abc123
+   MYSQL_DB_HOST: mysql-order
+   MYSQL_DB_PORT: 3306
+
+volumes:
+ mongodb_ticket_data:
+ mysql_event_data:
+ mysql_registration_data:
