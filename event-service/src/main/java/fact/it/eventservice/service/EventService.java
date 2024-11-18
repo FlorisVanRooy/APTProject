@@ -1,0 +1,70 @@
+package fact.it.eventservice.service;
+
+import fact.it.eventservice.model.Event;
+import fact.it.eventservice.dto.EventRequest;
+import fact.it.eventservice.dto.EventResponse;
+import fact.it.eventservice.repository.EventRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class EventService {
+    private final EventRepository eventRepository;
+
+    public void createEvent(EventRequest eventRequest) {
+        Event event = Event.builder()
+                .eventCode(eventRequest.getEventCode())
+                .type(eventRequest.getType())
+                .name(eventRequest.getName())
+                .description(eventRequest.getDescription())
+                .build();
+
+        eventRepository.save(event);
+    }
+
+    public List<EventResponse> getAllEvents() {
+        List<Event> events = eventRepository.findAll();
+
+        return events.stream().map(this::mapToEventResponse).toList();
+    }
+
+    public List<EventResponse> getAllEventsByEventCode(List<String> eventCode) {
+        List<Event> events = eventRepository.findByEventCodeIn(eventCode);
+
+        return events.stream().map(this::mapToEventResponse).toList();
+    }
+
+    public void updateEvent(String eventCode, EventRequest eventRequest) {
+        Event event = eventRepository.findByEventCode(eventCode)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        event.setType(eventRequest.getType());
+        event.setName(eventRequest.getName());
+        event.setDescription(eventRequest.getDescription());
+
+        eventRepository.save(event);
+    }
+
+    public void deleteEventByEventCode(String eventCode) {
+        Event event = eventRepository.findByEventCode(eventCode)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        eventRepository.delete(event);
+    }
+
+    private EventResponse mapToEventResponse(Event event) {
+        return EventResponse.builder()
+                .id(event.getId())
+                .eventCode(event.getEventCode())
+                .type(event.getType())
+                .name(event.getName())
+                .description(event.getDescription())
+                .build();
+    }
+}
