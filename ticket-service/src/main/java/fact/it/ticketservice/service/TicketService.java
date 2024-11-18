@@ -58,7 +58,7 @@ public class TicketService {
 
     private TicketResponse mapToTicketResponse(Ticket ticket) {
         return TicketResponse.builder()
-                .id(ticket.getId())
+                .id(String.valueOf(ticket.getId()))
                 .ticketCode(ticket.getTicketCode())
                 .type(ticket.getType())
                 .price(ticket.getPrice())

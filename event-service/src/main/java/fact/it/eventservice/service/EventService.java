@@ -60,7 +60,7 @@ public class EventService {
 
     private EventResponse mapToEventResponse(Event event) {
         return EventResponse.builder()
-                .id(event.getId())
+                .id(String.valueOf(event.getId()))
                 .eventCode(event.getEventCode())
                 .type(event.getType())
                 .name(event.getName())

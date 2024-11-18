@@ -101,7 +101,7 @@ public class RegistrationService {
 
     private RegistrationResponse mapToRegistrationResponse(Registration registration) {
         return RegistrationResponse.builder()
-                .id(registration.getId())
+                .id(String.valueOf(registration.getId()))
                 .registrationCode(registration.getRegistrationCode())
                 .firstName(registration.getFirstName())
                 .lastName(registration.getLastName())
