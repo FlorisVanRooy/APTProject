@@ -24,7 +24,7 @@ public class EventController {
         eventService.createEvent(eventRequest);
     }
 
-    @GetMapping
+    @GetMapping("/{eventCode}")
     @ResponseStatus(HttpStatus.OK)
     public EventResponse getAllEventsByEventCode(@PathVariable String eventCode) {
         return eventService.getEventByEventCode(eventCode);
@@ -37,7 +37,7 @@ public class EventController {
     }
 
     // Update an event by its eventCode
-    @PutMapping
+    @PutMapping("/{eventCode}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> updateEvent(@PathVariable String eventCode, @RequestBody EventRequest eventRequest) {
         try {
@@ -49,7 +49,7 @@ public class EventController {
     }
 
     // Delete an event by its eventCode
-    @DeleteMapping
+    @DeleteMapping("/{eventCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteEvent(@PathVariable String eventCode) {
         try {

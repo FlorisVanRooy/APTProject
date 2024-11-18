@@ -24,7 +24,7 @@ public class TicketController {
         ticketService.createProduct(ticketRequest);
     }
 
-    @GetMapping
+    @GetMapping("/{ticketCode}")
     @ResponseStatus(HttpStatus.OK)
     public TicketResponse getAllTicketsByTicketCode(@PathVariable String ticketCode) {
         return ticketService.getTicketByTicketCode(ticketCode);
@@ -37,7 +37,7 @@ public class TicketController {
     }
 
     // Update a ticket by its ticketCode
-    @PutMapping
+    @PutMapping("/{ticketCode}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> updateTicket(@PathVariable String ticketCode, @RequestBody TicketRequest ticketRequest) {
         try {
@@ -49,7 +49,7 @@ public class TicketController {
     }
 
     // Delete a ticket by its ticketCode
-    @DeleteMapping
+    @DeleteMapping("/{ticketCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteTicket(@PathVariable String ticketCode) {
         try {

@@ -25,9 +25,9 @@ public class RegistrationController {
     }
 
     // Get a registration by its registrationCode using @RequestParam
-    @GetMapping
+    @GetMapping("/{registrationCode}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RegistrationResponse> getRegistrationByRegistrationCode(@RequestParam String registrationCode) {
+    public ResponseEntity<RegistrationResponse> getRegistrationByRegistrationCode(@PathVariable String registrationCode) {
         Optional<RegistrationResponse> registration = registrationService.getRegistrationByRegistrationCode(registrationCode);
         return registration.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -40,9 +40,9 @@ public class RegistrationController {
     }
 
     // Update a registration by its registrationCode using @RequestParam
-    @PutMapping
+    @PutMapping("/{registrationCode}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateRegistration(@RequestParam String registrationCode, @RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<String> updateRegistration(@PathVariable String registrationCode, @RequestBody RegistrationRequest registrationRequest) {
         try {
             registrationService.updateRegistration(registrationCode, registrationRequest);
             return ResponseEntity.ok("Registration updated successfully.");
@@ -52,9 +52,9 @@ public class RegistrationController {
     }
 
     // Delete a registration by its registrationCode using @RequestParam
-    @DeleteMapping
+    @DeleteMapping("/{registrationCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteRegistration(@RequestParam String registrationCode) {
+    public ResponseEntity<String> deleteRegistration(@PathVariable String registrationCode) {
         try {
             registrationService.deleteRegistrationByRegistrationCode(registrationCode);
             return ResponseEntity.noContent().build();
