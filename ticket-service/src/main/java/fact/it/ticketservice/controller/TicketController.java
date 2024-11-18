@@ -26,8 +26,8 @@ public class TicketController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TicketResponse> getAllTicketsByTicketCode(@RequestParam List<String> ticketCode) {
-        return ticketService.getAllProductsBySkuCode(ticketCode);
+    public TicketResponse getAllTicketsByTicketCode(@PathVariable String ticketCode) {
+        return ticketService.getTicketByTicketCode(ticketCode);
     }
 
     @GetMapping("/all")

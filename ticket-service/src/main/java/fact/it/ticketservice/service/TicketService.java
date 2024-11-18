@@ -33,10 +33,9 @@ public class TicketService {
         return tickets.stream().map(this::mapToTicketResponse).toList();
     }
 
-    public List<TicketResponse> getAllProductsBySkuCode(List<String> ticketCode) {
-        List<Ticket> tickets = ticketRepository.findByTicketCodeIn(ticketCode);
-
-        return tickets.stream().map(this::mapToTicketResponse).toList();
+    public TicketResponse getTicketByTicketCode(String ticketCode) {
+        Ticket ticket = ticketRepository.findByTicketCode(ticketCode).orElseThrow();
+        return mapToTicketResponse(ticket);
     }
 
     public void updateTicket(String ticketCode, TicketRequest ticketRequest) {

@@ -34,10 +34,10 @@ public class EventService {
         return events.stream().map(this::mapToEventResponse).toList();
     }
 
-    public List<EventResponse> getAllEventsByEventCode(List<String> eventCode) {
-        List<Event> events = eventRepository.findByEventCodeIn(eventCode);
+    public EventResponse getEventByEventCode(String eventCode) {
+        Event event = eventRepository.findByEventCode(eventCode).orElseThrow();
 
-        return events.stream().map(this::mapToEventResponse).toList();
+        return mapToEventResponse(event);
     }
 
     public void updateEvent(String eventCode, EventRequest eventRequest) {

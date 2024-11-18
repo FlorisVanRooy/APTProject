@@ -26,8 +26,8 @@ public class EventController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventResponse> getAllEventsByEventCode(@RequestParam List<String> eventCode) {
-        return eventService.getAllEventsByEventCode(eventCode);
+    public EventResponse getAllEventsByEventCode(@PathVariable String eventCode) {
+        return eventService.getEventByEventCode(eventCode);
     }
 
     @GetMapping("/all")

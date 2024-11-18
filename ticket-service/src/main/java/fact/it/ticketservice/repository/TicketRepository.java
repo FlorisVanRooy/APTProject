@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, String> {
-    List<Ticket> findByTicketCodeIn(List<String> skuCode);
     Optional<Ticket> findByTicketCode(String ticketCode);
 }
