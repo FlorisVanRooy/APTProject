@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String ticketCode;
     private String type;
     private Integer amountLeft;

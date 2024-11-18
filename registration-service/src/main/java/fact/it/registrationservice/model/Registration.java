@@ -13,7 +13,7 @@ import lombok.*;
 public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String registrationCode;
     private String firstName;
     private String lastName;

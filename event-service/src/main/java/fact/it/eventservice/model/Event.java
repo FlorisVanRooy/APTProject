@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Data
 public class Event {
-    private String id;
+    private Integer id;
     private String eventCode;
     private String type;
     private String name;
