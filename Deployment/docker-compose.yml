@@ -20,7 +20,7 @@ services:
   ports:
     - 3307:3306
   volumes:
-    - mysql_inventory_data:/var/lib/mysql
+    - mysql_event_data:/var/lib/mysql
   environment:
    MYSQL_ROOT_PASSWORD: abc123
     
@@ -65,7 +65,7 @@ services:
    TICKET_SERVICE_BASEURL: ticket-service:8082
    MYSQL_DB_USERNAME: root
    MYSQL_DB_PASSWORD: abc123
-   MYSQL_DB_HOST: mysql-order
+   MYSQL_DB_HOST: mysql-registration
    MYSQL_DB_PORT: 3306
 
 volumes:
