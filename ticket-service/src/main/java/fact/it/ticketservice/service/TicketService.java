@@ -65,4 +65,11 @@ public class TicketService {
                 .amountLeft(ticket.getAmountLeft())
                 .build();
     }
+
+    public void deleteTicketById(Integer id) {
+        Ticket ticket = ticketRepository.findById(String.valueOf(id))
+                .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
+
+        ticketRepository.delete(ticket);
+    }
 }

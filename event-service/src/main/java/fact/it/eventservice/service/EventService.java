@@ -67,4 +67,11 @@ public class EventService {
                 .description(event.getDescription())
                 .build();
     }
+
+    public void deleteEventById(Integer id) {
+        Event event = eventRepository.findById(String.valueOf(id))
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        eventRepository.delete(event);
+    }
 }

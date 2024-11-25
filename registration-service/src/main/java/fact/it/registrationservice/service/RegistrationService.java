@@ -111,4 +111,13 @@ public class RegistrationService {
                 .amount(registration.getAmount())
                 .build();
     }
+
+    public void deleteRegistrationById(Integer id) {
+        Optional<Registration> registrationOpt = registrationRepository.findById(String.valueOf(id));
+        if (registrationOpt.isPresent()) {
+            registrationRepository.delete(registrationOpt.get());
+        } else {
+            throw new IllegalArgumentException("Registration with code " + id + " not found.");
+        }
+    }
 }
