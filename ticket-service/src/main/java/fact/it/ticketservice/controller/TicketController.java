@@ -48,18 +48,6 @@ public class TicketController {
         }
     }
 
-    // Delete a ticket by its ticketCode
-    @DeleteMapping("/{ticketCode}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteTicket(@PathVariable String ticketCode) {
-        try {
-            ticketService.deleteTicketByTicketCode(ticketCode);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteTicket(@PathVariable Integer id) {

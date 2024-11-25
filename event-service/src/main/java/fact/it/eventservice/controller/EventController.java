@@ -48,18 +48,6 @@ public class EventController {
         }
     }
 
-    // Delete an event by its eventCode
-    @DeleteMapping("/{eventCode}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteEvent(@PathVariable String eventCode) {
-        try {
-            eventService.deleteEventByEventCode(eventCode);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteEvent(@PathVariable Integer id) {

@@ -49,13 +49,6 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
-    public void deleteTicketByTicketCode(String ticketCode) {
-        Ticket ticket = ticketRepository.findByTicketCode(ticketCode)
-                .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
-
-        ticketRepository.delete(ticket);
-    }
-
     private TicketResponse mapToTicketResponse(Ticket ticket) {
         return TicketResponse.builder()
                 .id(String.valueOf(ticket.getId()))

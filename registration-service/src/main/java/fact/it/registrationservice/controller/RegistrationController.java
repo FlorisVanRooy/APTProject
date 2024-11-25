@@ -51,18 +51,6 @@ public class RegistrationController {
         }
     }
 
-    // Delete a registration by its registrationCode using @RequestParam
-    @DeleteMapping("/{registrationCode}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteRegistration(@PathVariable String registrationCode) {
-        try {
-            registrationService.deleteRegistrationByRegistrationCode(registrationCode);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteRegistration(@PathVariable Integer id) {

@@ -90,15 +90,6 @@ public class RegistrationService {
         }
     }
 
-    public void deleteRegistrationByRegistrationCode(String registrationCode) {
-        Optional<Registration> registrationOpt = registrationRepository.findByRegistrationCode(registrationCode);
-        if (registrationOpt.isPresent()) {
-            registrationRepository.delete(registrationOpt.get());
-        } else {
-            throw new IllegalArgumentException("Registration with code " + registrationCode + " not found.");
-        }
-    }
-
     private RegistrationResponse mapToRegistrationResponse(Registration registration) {
         return RegistrationResponse.builder()
                 .id(String.valueOf(registration.getId()))

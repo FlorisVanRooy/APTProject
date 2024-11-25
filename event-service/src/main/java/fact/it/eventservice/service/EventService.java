@@ -51,13 +51,6 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public void deleteEventByEventCode(String eventCode) {
-        Event event = eventRepository.findByEventCode(eventCode)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
-
-        eventRepository.delete(event);
-    }
-
     private EventResponse mapToEventResponse(Event event) {
         return EventResponse.builder()
                 .id(String.valueOf(event.getId()))
