@@ -7,6 +7,7 @@ import fact.it.registrationservice.dto.TicketResponse;
 import fact.it.registrationservice.model.Registration;
 import fact.it.registrationservice.repository.RegistrationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,6 +22,12 @@ import java.util.UUID;
 public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final WebClient webClient;
+
+    @Value("${ticketservice.baseurl}")
+    private String ticketServiceBaseUrl;
+
+    @Value("${eventservice.baseurl}")
+    private String eventServiceBaseUrl;
 
     public void createRegistration(RegistrationRequest registrationRequest) {
         Registration registration = new Registration();
@@ -37,14 +44,13 @@ public class RegistrationService {
 
         // Fetch the ticket information
         TicketResponse ticketResponse = webClient.get()
-                .uri("http://localhost:8082/api/ticket/{ticketCode}", ticketCode)
+                .uri(ticketServiceBaseUrl + "/api/ticket/{ticketCode}", ticketCode)
                 .retrieve()
                 .bodyToMono(TicketResponse.class)
                 .block();
 
-        // Fetch the event information
         EventResponse eventResponse = webClient.get()
-                .uri("http://localhost:8080/api/event/{eventCode}", eventCode)
+                .uri(eventServiceBaseUrl + "/api/event/{eventCode}", eventCode)
                 .retrieve()
                 .bodyToMono(EventResponse.class)
                 .block();
