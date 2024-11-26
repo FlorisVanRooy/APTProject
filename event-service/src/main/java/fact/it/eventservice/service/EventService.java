@@ -62,8 +62,8 @@ public class EventService {
                 .build();
     }
 
-    public void deleteEventById(Integer id) {
-        Event event = eventRepository.findById(String.valueOf(id))
+    public void deleteEventById(String id) {
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
         eventRepository.delete(event);
