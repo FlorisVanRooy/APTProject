@@ -44,6 +44,7 @@ public class EventService {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
+        event.setEventCode(eventRequest.getEventCode());
         event.setType(eventRequest.getType());
         event.setName(eventRequest.getName());
         event.setDescription(eventRequest.getDescription());

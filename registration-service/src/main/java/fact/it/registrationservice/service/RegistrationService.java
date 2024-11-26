@@ -22,8 +22,9 @@ public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final WebClient webClient;
 
-    public boolean createRegistration(RegistrationRequest registrationRequest) {
+    public void createRegistration(RegistrationRequest registrationRequest) {
         Registration registration = new Registration();
+        registration.setRegistrationCode(registrationRequest.getRegistrationCode());
         registration.setRegistrationCode(UUID.randomUUID().toString());
         registration.setFirstName(registrationRequest.getFirstName());
         registration.setLastName(registrationRequest.getLastName());
@@ -58,9 +59,6 @@ public class RegistrationService {
 
             // Save the registration to the database
             registrationRepository.save(registration);
-            return true;
-        } else {
-            return false; // Handle cases where the ticket is not available or the event does not exist
         }
     }
 
@@ -78,6 +76,7 @@ public class RegistrationService {
         Optional<Registration> registrationOpt = registrationRepository.findById(String.valueOf(id));
         if (registrationOpt.isPresent()) {
             Registration registration = registrationOpt.get();
+            registration.setRegistrationCode(updatedRequest.getRegistrationCode());
             registration.setFirstName(updatedRequest.getFirstName());
             registration.setLastName(updatedRequest.getLastName());
             registration.setEmail(updatedRequest.getEmail());
