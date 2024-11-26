@@ -39,12 +39,11 @@ public class RegistrationController {
         return registrationService.getAllRegistrations();
     }
 
-    // Update a registration by its registrationCode using @RequestParam
-    @PutMapping("/{registrationCode}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateRegistration(@PathVariable String registrationCode, @RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<String> updateRegistration(@PathVariable Integer id, @RequestBody RegistrationRequest registrationRequest) {
         try {
-            registrationService.updateRegistration(registrationCode, registrationRequest);
+            registrationService.updateRegistration(id, registrationRequest);
             return ResponseEntity.ok("Registration updated successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

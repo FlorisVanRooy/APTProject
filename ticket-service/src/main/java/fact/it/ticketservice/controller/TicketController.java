@@ -37,11 +37,11 @@ public class TicketController {
     }
 
     // Update a ticket by its ticketCode
-    @PutMapping("/{ticketCode}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateTicket(@PathVariable String ticketCode, @RequestBody TicketRequest ticketRequest) {
+    public ResponseEntity<String> updateTicket(@PathVariable Integer id, @RequestBody TicketRequest ticketRequest) {
         try {
-            ticketService.updateTicket(ticketCode, ticketRequest);
+            ticketService.updateTicket(id, ticketRequest);
             return ResponseEntity.ok("Ticket updated successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

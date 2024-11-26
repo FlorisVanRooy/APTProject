@@ -40,8 +40,8 @@ public class EventService {
         return mapToEventResponse(event);
     }
 
-    public void updateEvent(String eventCode, EventRequest eventRequest) {
-        Event event = eventRepository.findByEventCode(eventCode)
+    public void updateEvent(String id, EventRequest eventRequest) {
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
         event.setType(eventRequest.getType());

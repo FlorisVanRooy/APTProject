@@ -37,11 +37,11 @@ public class EventController {
     }
 
     // Update an event by its eventCode
-    @PutMapping("/{eventCode}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateEvent(@PathVariable String eventCode, @RequestBody EventRequest eventRequest) {
+    public ResponseEntity<String> updateEvent(@PathVariable String id, @RequestBody EventRequest eventRequest) {
         try {
-            eventService.updateEvent(eventCode, eventRequest);
+            eventService.updateEvent(id, eventRequest);
             return ResponseEntity.ok("Event updated successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

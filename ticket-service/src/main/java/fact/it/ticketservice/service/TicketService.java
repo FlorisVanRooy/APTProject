@@ -19,6 +19,7 @@ public class TicketService {
 
     public void createProduct(TicketRequest ticketRequest) {
         Ticket ticket = Ticket.builder()
+                .ticketCode(ticketRequest.getTicketCode())
                 .type(ticketRequest.getType())
                 .amountLeft(ticketRequest.getAmountLeft())
                 .price(ticketRequest.getPrice())
@@ -38,8 +39,8 @@ public class TicketService {
         return mapToTicketResponse(ticket);
     }
 
-    public void updateTicket(String ticketCode, TicketRequest ticketRequest) {
-        Ticket ticket = ticketRepository.findByTicketCode(ticketCode)
+    public void updateTicket(Integer id, TicketRequest ticketRequest) {
+        Ticket ticket = ticketRepository.findById(String.valueOf(id))
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
 
         ticket.setType(ticketRequest.getType());

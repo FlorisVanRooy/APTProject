@@ -74,8 +74,8 @@ public class RegistrationService {
         return registrations.stream().map(this::mapToRegistrationResponse).toList();
     }
 
-    public void updateRegistration(String registrationCode, RegistrationRequest updatedRequest) {
-        Optional<Registration> registrationOpt = registrationRepository.findByRegistrationCode(registrationCode);
+    public void updateRegistration(Integer id, RegistrationRequest updatedRequest) {
+        Optional<Registration> registrationOpt = registrationRepository.findById(String.valueOf(id));
         if (registrationOpt.isPresent()) {
             Registration registration = registrationOpt.get();
             registration.setFirstName(updatedRequest.getFirstName());
@@ -86,7 +86,7 @@ public class RegistrationService {
             registration.setAmount(updatedRequest.getAmount());
             registrationRepository.save(registration);
         } else {
-            throw new IllegalArgumentException("Registration with code " + registrationCode + " not found.");
+            throw new IllegalArgumentException("Registration with id " + id + " not found.");
         }
     }
 
