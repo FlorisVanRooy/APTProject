@@ -50,7 +50,7 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteEvent(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable String id) {
         try {
             eventService.deleteEventById(id);
             return ResponseEntity.noContent().build();

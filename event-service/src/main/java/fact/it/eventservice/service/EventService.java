@@ -40,7 +40,7 @@ public class EventService {
         return mapToEventResponse(event);
     }
 
-    public void updateEvent(Integer id, EventRequest eventRequest) {
+    public void updateEvent(String id, EventRequest eventRequest) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
@@ -62,7 +62,7 @@ public class EventService {
                 .build();
     }
 
-    public void deleteEventById(Integer id) {
+    public void deleteEventById(String id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
