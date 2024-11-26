@@ -61,8 +61,8 @@ services:
     - ticket-service
     - event-service
   environment:
-   EVENT_SERVICE_BASEURL: event-service:8080
-   TICKET_SERVICE_BASEURL: ticket-service:8082
+   EVENT_SERVICE_BASEURL: http://event-service:8080
+   TICKET_SERVICE_BASEURL: http://ticket-service:8082
    MYSQL_DB_USERNAME: root
    MYSQL_DB_PASSWORD: abc123
    MYSQL_DB_HOST: mysql-registration
