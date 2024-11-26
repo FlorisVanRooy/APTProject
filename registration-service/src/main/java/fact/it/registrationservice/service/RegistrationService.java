@@ -32,7 +32,6 @@ public class RegistrationService {
     public void createRegistration(RegistrationRequest registrationRequest) {
         Registration registration = new Registration();
         registration.setRegistrationCode(registrationRequest.getRegistrationCode());
-        registration.setRegistrationCode(UUID.randomUUID().toString());
         registration.setFirstName(registrationRequest.getFirstName());
         registration.setLastName(registrationRequest.getLastName());
         registration.setEmail(registrationRequest.getEmail());
@@ -79,7 +78,7 @@ public class RegistrationService {
     }
 
     public void updateRegistration(Integer id, RegistrationRequest updatedRequest) {
-        Optional<Registration> registrationOpt = registrationRepository.findById(String.valueOf(id));
+        Optional<Registration> registrationOpt = registrationRepository.findById(id);
         if (registrationOpt.isPresent()) {
             Registration registration = registrationOpt.get();
             registration.setRegistrationCode(updatedRequest.getRegistrationCode());
@@ -109,7 +108,7 @@ public class RegistrationService {
     }
 
     public void deleteRegistrationById(Integer id) {
-        Optional<Registration> registrationOpt = registrationRepository.findById(String.valueOf(id));
+        Optional<Registration> registrationOpt = registrationRepository.findById(id);
         if (registrationOpt.isPresent()) {
             registrationRepository.delete(registrationOpt.get());
         } else {

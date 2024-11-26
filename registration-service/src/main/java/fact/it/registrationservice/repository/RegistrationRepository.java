@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RegistrationRepository extends JpaRepository<Registration, String> {
+public interface RegistrationRepository extends JpaRepository<Registration, Integer> {
     Optional<Registration> findByRegistrationCode(String registrationCode);
 }
