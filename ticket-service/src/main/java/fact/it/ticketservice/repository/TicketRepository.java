@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TicketRepository extends JpaRepository<Ticket, String> {
+public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     Optional<Ticket> findByTicketCode(String ticketCode);
 }

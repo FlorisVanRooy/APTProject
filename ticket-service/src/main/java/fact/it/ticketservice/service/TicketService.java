@@ -40,7 +40,7 @@ public class TicketService {
     }
 
     public void updateTicket(Integer id, TicketRequest ticketRequest) {
-        Ticket ticket = ticketRepository.findById(String.valueOf(id))
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
 
         ticket.setTicketCode(ticket.getTicketCode());
@@ -62,7 +62,7 @@ public class TicketService {
     }
 
     public void deleteTicketById(Integer id) {
-        Ticket ticket = ticketRepository.findById(String.valueOf(id))
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
 
         ticketRepository.delete(ticket);
