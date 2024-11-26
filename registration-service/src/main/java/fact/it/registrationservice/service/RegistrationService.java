@@ -37,14 +37,14 @@ public class RegistrationService {
 
         // Fetch the ticket information
         TicketResponse ticketResponse = webClient.get()
-                .uri("http://localhost:8081/api/ticket/code/{ticketCode}", ticketCode)
+                .uri("http://localhost:8082/api/ticket/{ticketCode}", ticketCode)
                 .retrieve()
                 .bodyToMono(TicketResponse.class)
                 .block();
 
         // Fetch the event information
         EventResponse eventResponse = webClient.get()
-                .uri("http://localhost:8080/api/event/code/{eventCode}", eventCode)
+                .uri("http://localhost:8080/api/event/{eventCode}", eventCode)
                 .retrieve()
                 .bodyToMono(EventResponse.class)
                 .block();
