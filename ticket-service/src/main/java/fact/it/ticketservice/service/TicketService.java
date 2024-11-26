@@ -43,7 +43,7 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ticket not found"));
 
-        ticket.setTicketCode(ticket.getTicketCode());
+        ticket.setTicketCode(ticketRequest.getTicketCode());
         ticket.setType(ticketRequest.getType());
         ticket.setAmountLeft(ticketRequest.getAmountLeft());
         ticket.setPrice(ticketRequest.getPrice());
