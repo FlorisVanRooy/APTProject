@@ -63,6 +63,7 @@ public class RegistrationService {
             registration.setEventCode(eventCode);
 
             // Save the registration to the database
+
             registrationRepository.save(registration);
         }
     }

@@ -1,0 +1,22 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    reactor.netty: INFO
+    org.springframework.security: TRACE
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: event-service
+          uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/events
+            - Method=GET
+          filters:
+            - SetPath=/api/event/all
