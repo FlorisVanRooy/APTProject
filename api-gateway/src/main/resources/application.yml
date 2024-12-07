@@ -10,6 +10,18 @@ logging:
     org.springframework.security: TRACE
 
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENTID}
+            client-secret: ${GOOGLE_CLIENTSECRET}
+            scope: openid,profile,email
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
   cloud:
     gateway:
       routes:
@@ -20,3 +32,80 @@ spring:
             - Method=GET
           filters:
             - SetPath=/api/event/all
+        - id: event-service
+          uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/events
+            - Method=POST
+          filters:
+            - SetPath=/api/event
+        - id: event-service
+          uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/events/{id}
+            - Method=PUT
+          filters:
+            - SetPath=/api/event/{id}
+        - id: event-service
+          uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/events/{id}
+            - Method=DELETE
+          filters:
+            - SetPath=/api/event/{id}
+        - id: ticket-service
+          uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/tickets
+            - Method=GET
+          filters:
+            - SetPath=/api/ticket/all
+        - id: ticket-service
+          uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/tickets
+            - Method=POST
+          filters:
+            - SetPath=/api/ticket
+        - id: ticket-service
+          uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/tickets/{id}
+            - Method=PUT
+          filters:
+            - SetPath=/api/ticket/{id}
+        - id: ticket-service
+          uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/tickets/{id}
+            - Method=DELETE
+          filters:
+            - SetPath=/api/ticket/{id}
+        - id: registration-service
+          uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/registrations
+            - Method=GET
+          filters:
+            - SetPath=/api/registration/all
+        - id: registration-service
+          uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/registrations
+            - Method=POST
+          filters:
+            - SetPath=/api/registration
+        - id: registration-service
+          uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/registrations/{id}
+            - Method=PUT
+          filters:
+            - SetPath=/api/registration/{id}
+        - id: registration-service
+          uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/registrations/{id}
+            - Method=DELETE
+          filters:
+            - SetPath=/api/registration/{id}
