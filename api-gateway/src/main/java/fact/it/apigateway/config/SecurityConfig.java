@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(HttpMethod.GET, "/events", "/tickets").permitAll() // Public endpoints
+                        .pathMatchers(HttpMethod.GET, "/events", "/tickets", "/events/by-code/{code}", "/tickets/by-code/{code}").permitAll() // Public endpoints
                         .anyExchange().authenticated() // Require authentication for everything else
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

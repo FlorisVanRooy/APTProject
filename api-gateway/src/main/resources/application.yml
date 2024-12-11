@@ -35,6 +35,13 @@ spring:
         - id: event-service
           uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
           predicates:
+            - Path=/events/by-code/{code}
+            - Method=GET
+          filters:
+            - SetPath=/api/event/{code}
+        - id: event-service
+          uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
+          predicates:
             - Path=/events
             - Method=POST
           filters:
@@ -60,6 +67,13 @@ spring:
             - Method=GET
           filters:
             - SetPath=/api/ticket/all
+        - id: ticket-service
+          uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/tickets/by-code/{code}
+            - Method=GET
+          filters:
+            - SetPath=/api/ticket/{code}
         - id: ticket-service
           uri: http://${TICKET_SERVICE_BASEURL:localhost:8082}
           predicates:
