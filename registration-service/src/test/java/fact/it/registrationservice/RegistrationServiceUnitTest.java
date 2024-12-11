@@ -4,6 +4,7 @@ import fact.it.registrationservice.dto.*;
 import fact.it.registrationservice.model.Registration;
 import fact.it.registrationservice.repository.RegistrationRepository;
 import fact.it.registrationservice.service.RegistrationService;
+import jdk.jfr.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,8 +47,8 @@ public class RegistrationServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(registrationService, "ticketServiceBaseUrl", "http://localhost:8081");
-        ReflectionTestUtils.setField(registrationService, "eventServiceBaseUrl", "http://localhost:8082");
+        ReflectionTestUtils.setField(registrationService, "ticketServiceBaseUrl", "http://localhost:8082");
+        ReflectionTestUtils.setField(registrationService, "eventServiceBaseUrl", "http://localhost:8080");
     }
 
     @Test
@@ -66,15 +67,15 @@ public class RegistrationServiceUnitTest {
                 .amount(2.0)
                 .build();
 
+        // Simulating responses for Ticket and Event services
         TicketResponse ticketResponse = TicketResponse.builder()
                 .eventCode(eventCode)
-                .amountLeft(10)
+                .amountLeft(10) // Simulating available tickets
                 .price(50.0)
                 .build();
 
         EventResponse eventResponse = EventResponse.builder()
                 .eventCode(eventCode)
-                .isInStock(true)
                 .build();
 
         Registration registration = Registration.builder()
@@ -87,21 +88,27 @@ public class RegistrationServiceUnitTest {
                 .amount(2.0)
                 .build();
 
-        when(webClient.get()).thenReturn(requestHeadersUriSpec);
-        when(requestHeadersUriSpec.uri(anyString(),  any(Function.class))).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(TicketResponse[].class)).thenReturn(Mono.just(new TicketResponse[]{ticketResponse}));
-        when(responseSpec.bodyToMono(EventResponse[].class)).thenReturn(Mono.just(new EventResponse[]{eventResponse}));
-
-
         when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
+
+        // Mocking WebClient GET calls to fetch ticket and event data
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(eq("http://localhost:8082" + "/api/ticket/{ticketCode}"), eq(ticketCode)))
+                .thenReturn(requestHeadersSpec); // Path variable for ticketCode
+        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(TicketResponse.class)).thenReturn(Mono.just(ticketResponse));
+
+        when(requestHeadersUriSpec.uri(eq("http://localhost:8080" + "/api/event/{eventCode}"), eq(eventCode)))
+                .thenReturn(requestHeadersSpec); // Path variable for eventCode
+        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(EventResponse.class)).thenReturn(Mono.just(eventResponse));
 
         // Act
         registrationService.createRegistration(registrationRequest);
 
         // Assert
-        verify(registrationRepository, times(1)).save(any(Registration.class));
+        verify(registrationRepository, times(1)).save(any(Registration.class)); // Ensure registration is saved
     }
+
 
     @Test
     public void testCreateRegistration_Failure_TicketUnavailable() {
@@ -119,21 +126,39 @@ public class RegistrationServiceUnitTest {
                 .amount(1.0)
                 .build();
 
+        // Simulating the ticket being unavailable (amountLeft = 0)
         TicketResponse ticketResponse = TicketResponse.builder()
                 .eventCode(eventCode)
-                .amountLeft(0)
+                .amountLeft(0) // Simulating no available tickets
                 .price(50.0)
                 .build();
 
-        when(webClient.get()).thenReturn(requestHeadersUriSpec);
-        when(requestHeadersUriSpec.uri(eq("http://localhost:8081/api/ticket/{ticketCode}"), eq(ticketCode))).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(TicketResponse.class)).thenReturn(Mono.just(ticketResponse));
+        // Simulating the event response
+        EventResponse eventResponse = EventResponse.builder()
+                .eventCode(eventCode)
+                .build();
 
-        // Act & Assert
+        // Mocking WebClient GET calls for ticket and event services
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(eq("http://localhost:8082" + "/api/ticket/{ticketCode}"), eq(ticketCode)))
+                .thenReturn(requestHeadersSpec); // Path variable for ticketCode
+        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(TicketResponse.class)).thenReturn(Mono.just(ticketResponse)); // Correct mock for TicketResponse
+
+        // Mocking the event service response
+        when(requestHeadersUriSpec.uri(eq("http://localhost:8080" + "/api/event/{eventCode}"), eq(eventCode)))
+                .thenReturn(requestHeadersSpec); // Path variable for eventCode
+        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(EventResponse.class)).thenReturn(Mono.just(eventResponse)); // Correct mock for EventResponse
+
+        // Act
         registrationService.createRegistration(registrationRequest);
-        verify(registrationRepository, times(0)).save(any(Registration.class));
+
+        // Assert: Ensure registration is not saved because there are no tickets available
+        verify(registrationRepository, times(0)).save(any(Registration.class)); // No registration should be saved
     }
+
+
 
     @Test
     public void testGetAllRegistrations() {
