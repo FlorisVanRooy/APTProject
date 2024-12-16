@@ -11,7 +11,10 @@ const Register = ({ event, ticket }) => {
       ticketId: ticket.id,
     };
 
-    fetch('http://api-gateway:8083/registration', {
+    // Use the environment variable for the API URL
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
+
+    fetch(`${apiUrl}/registration`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(registrationData),

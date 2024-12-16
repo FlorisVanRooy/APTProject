@@ -5,8 +5,11 @@ const TicketList = ({ eventId }) => {
 
   useEffect(() => {
     if (eventId) {
+      // Use the environment variable for API URL
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
+
       // Fetch tickets for the selected event from the API Gateway
-      fetch(`http://api-gateway:8083/tickets?eventId=${eventId}`)
+      fetch(`${apiUrl}/tickets?eventId=${eventId}`)
         .then(response => response.json())
         .then(data => setTickets(data))
         .catch(error => console.error('Error fetching tickets:', error));
