@@ -17,20 +17,21 @@ COPY . /app
 ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 
-# Run build and check if the build directory is created
-RUN npm run build && ls -l /app/dist  # Changed to /app/dist since your build is outputting there
+# Build the app
+RUN npm run build
 
 # Step 7: Set up Nginx to serve the built app
 FROM nginx:alpine
 
-# Step 8: Ensure the target directory exists in the Nginx container
-RUN mkdir -p /usr/share/nginx/html
-
-# Step 9: Copy the build output from the previous stage to the Nginx container
+# Step 8: Copy the build output from the previous stage to the Nginx container
 COPY --from=build /app/dist /usr/share/nginx/html
+
+# Step 9: Copy the shell script to inject client ID at runtime
+COPY inject-client-id.sh /usr/share/nginx/html/inject-client-id.sh
+RUN chmod +x /usr/share/nginx/html/inject-client-id.sh
 
 # Step 10: Expose port 80
 EXPOSE 80
 
-# Step 11: Start the Nginx server to serve the app
-CMD ["nginx", "-g", "daemon off;"]
+# Step 11: Run the script to inject the client ID before starting Nginx
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/inject-client-id.sh && nginx -g 'daemon off;'"]

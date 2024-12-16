@@ -39,7 +39,7 @@ const App = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId="__VITE_GOOGLE_CLIENT_ID__">
     <div>
       <h1>Event Registration</h1>
 
