@@ -11,7 +11,7 @@ COPY ./frontend/package.json ./frontend/package-lock.json ./
 RUN npm install
 
 # Step 5: Copy the entire frontend project files into the container
-COPY ./frontend /app
+COPY . /app
 
 # Step 6: Build the React app with the environment variable (VITE_GOOGLE_CLIENT_ID)
 ARG VITE_GOOGLE_CLIENT_ID
