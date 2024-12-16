@@ -5,13 +5,13 @@ FROM node:18 AS build
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json files
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY ./package.json ./package-lock.json ./
 
 # Step 4: Install dependencies
 RUN npm install
 
 # Step 5: Copy the rest of the frontend files
-COPY ./frontend /app
+COPY . /app
 
 # Step 6: Build the React app with the environment variable
 ARG VITE_GOOGLE_CLIENT_ID
