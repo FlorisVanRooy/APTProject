@@ -39,28 +39,28 @@ const App = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId="__VITE_GOOGLE_CLIENT_ID__">
-    <div>
-      <h1>Event Registration</h1>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <div>
+        <h1>Event Registration</h1>
 
-      {/* Display Google Login Button if user is not authenticated */}
-      {!isAuthenticated ? (
-        <GoogleLogin
-          onSuccess={handleLoginSuccess}
-          onError={handleLoginFailure}
-        />
-      ) : (
-        <>
-          {!selectedEvent ? (
-            <EventList onSelectEvent={handleSelectEvent} />
-          ) : !selectedTicket ? (
-            <TicketList onSelectTicket={handleSelectTicket} />
-          ) : (
-            <Register event={selectedEvent} ticket={selectedTicket} />
-          )}
-        </>
-      )}
-    </div>
+        {/* Display Google Login Button if user is not authenticated */}
+        {!isAuthenticated ? (
+          <GoogleLogin
+            onSuccess={handleLoginSuccess}
+            onError={handleLoginFailure}
+          />
+        ) : (
+          <>
+            {!selectedEvent ? (
+              <EventList onSelectEvent={handleSelectEvent} />
+            ) : !selectedTicket ? (
+              <TicketList onSelectTicket={handleSelectTicket} />
+            ) : (
+              <Register event={selectedEvent} ticket={selectedTicket} />
+            )}
+          </>
+        )}
+      </div>
     </GoogleOAuthProvider>
   );
 };
