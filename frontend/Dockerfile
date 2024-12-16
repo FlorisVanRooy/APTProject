@@ -23,11 +23,14 @@ RUN npm run build && ls -l /app/dist  # Changed to /app/dist since your build is
 # Step 7: Set up Nginx to serve the built app
 FROM nginx:alpine
 
-# Step 8: Copy the build output from the previous stage to the Nginx container
-COPY --from=build /app/dist /usr/share/nginx/html  # Changed from /app/build to /app/dist
+# Step 8: Ensure the target directory exists in the Nginx container
+RUN mkdir -p /usr/share/nginx/html
 
-# Step 9: Expose port 80
+# Step 9: Copy the build output from the previous stage to the Nginx container
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Step 10: Expose port 80
 EXPOSE 80
 
-# Step 10: Start the Nginx server to serve the app
+# Step 11: Start the Nginx server to serve the app
 CMD ["nginx", "-g", "daemon off;"]
