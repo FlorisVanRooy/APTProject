@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 
-const Register = ({ event, ticket }) => {
+const Register = ({ eventCode, ticketCode }) => {
   const [userDetails, setUserDetails] = useState({ name: '', email: '' });
 
   const handleRegister = () => {
     // POST registration data to the registration service through API Gateway
     const registrationData = {
       user: userDetails,
-      eventId: event.id,
-      ticketId: ticket.id,
+      eventCode: eventCode,
+      ticketCode: ticketCode,
     };
 
-    // Use the environment variable for the API URL
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
-
-    fetch(`${apiUrl}/registration`, {
+    fetch('http://api-gateway:8083/registration', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(registrationData),
@@ -28,7 +25,7 @@ const Register = ({ event, ticket }) => {
 
   return (
     <div>
-      <h2>Register for {event.name}</h2>
+      <h2>Register for Event {eventCode}</h2>
       <input
         type="text"
         placeholder="Your Name"
