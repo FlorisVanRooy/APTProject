@@ -5,8 +5,9 @@ const EventList = ({ onSelectEvent }) => {
 
   useEffect(() => {
     // Fetch events using the environment variable VITE_API_URL
-    const apiUrl = `${import.meta.env.VITE_API_URL}/events`;  // Use VITE_API_URL from the environment variable
-    fetch(apiUrl)
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
+
+    fetch(apiUrl + '/events')
       .then(response => response.json())
       .then(data => setEvents(data))
       .catch(error => console.error('Error fetching events:', error));

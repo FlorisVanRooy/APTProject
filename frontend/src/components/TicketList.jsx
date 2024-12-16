@@ -5,8 +5,8 @@ const TicketList = ({ onSelectTicket }) => {
 
   useEffect(() => {
     // Fetch all tickets using the environment variable VITE_API_URL
-    const apiUrl = `${import.meta.env.VITE_API_URL}/tickets`;  // Use VITE_API_URL from the environment variable
-    fetch(apiUrl)
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
+    fetch(apiUrl + '/tickets')
       .then(response => response.json())
       .then(data => setTickets(data))
       .catch(error => console.error('Error fetching tickets:', error));
@@ -18,7 +18,7 @@ const TicketList = ({ onSelectTicket }) => {
       <ul>
         {tickets.map(ticket => (
           <li key={ticket.ticketCode} onClick={() => onSelectTicket(ticket)}>
-            <p>{ticket.name}</p>
+            <p>{ticket.type}</p>
             <p>Price: ${ticket.price}</p>
           </li>
         ))}
