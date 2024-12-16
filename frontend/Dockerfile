@@ -19,4 +19,5 @@ RUN npm run build
 FROM nginx:stable
 COPY --from=build /frontend/dist /usr/share/nginx/html
 EXPOSE 80
+RUN cat .env
 CMD ["nginx", "-g", "daemon off;"]
