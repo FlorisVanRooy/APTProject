@@ -85,6 +85,17 @@ services:
     REGISTRATION_SERVICE_BASEURL: registration-service:8081
     TICKET_SERVICE_BASEURL: ticket-service:8082
 
+ frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:80
+    depends_on:
+      - api-gateway
+    environment:
+      VITE_API_URL: http://api-gateway:8083
+
 volumes:
  mongodb_event_data:
  mysql_ticket_data:
