@@ -1,4 +1,4 @@
-package fact.it.apigateway.config;
+/*package fact.it.apigateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,3 +22,4 @@ public class CorsConfig {
         return new CorsWebFilter(source);
     }
 }
+*/
