@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 FROM node:18 AS build
-WORKDIR /frontend  # Set working directory to /frontend
+WORKDIR /frontend
 COPY package*.json ./
 RUN npm install
 COPY . .
@@ -12,7 +12,10 @@ ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 # Write the VITE_GOOGLE_CLIENT_ID to the .env file in the frontend directory
 RUN echo "VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID" >> .env
 
-# Stage 2: Serve the application
+# Run the build (ensure dist folder is generated)
+RUN npm run build
+
+# Stage 2: Serve the application using nginx
 FROM nginx:stable
 COPY --from=build /frontend/dist /usr/share/nginx/html
 EXPOSE 80
