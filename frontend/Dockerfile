@@ -1,21 +1,39 @@
 # Stage 1: Build the application
 FROM node:18 AS build
-WORKDIR /frontend
-COPY package*.json ./
+
+# Set working directory
+WORKDIR /app
+
+# Accept build arguments
+ARG VITE_GOOGLE_CLIENT_ID
+
+# Set environment variables (if needed)
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
+
+# Copy package.json and install dependencies
+COPY package.json ./
 RUN npm install
+
+# Copy the rest of the app's files
 COPY . .
+
+# Build the app
 RUN npm run build
 
-# Pass the environment variable to the build step
-ARG VITE_GOOGLE_CLIENT_ID
-RUN echo "VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID" > .env
+# Stage 2: Serve the application using the 'serve' package
+FROM node:18
 
-# Stage 2: Serve the application with Nginx
-FROM nginx:stable
+# Install the 'serve' package globally
+RUN npm install -g serve
 
-# Copy the built app from the build stage
-COPY --from=build /frontend/dist /usr/share/nginx/html
+# Set working directory
+WORKDIR /app
 
-# No need to copy the .env file into the Nginx image (unless you need it)
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Copy the build from the previous stage
+COPY --from=build /app/build /app/build
+
+# Expose the build directory
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "start"]
