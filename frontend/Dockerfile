@@ -5,7 +5,7 @@ FROM node:18 AS build
 WORKDIR /app
 
 # Step 3: Copy the package.json and package-lock.json files to the working directory
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY ./package.json ./package-lock.json ./
 
 # Step 4: Install the dependencies
 RUN npm install
