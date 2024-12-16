@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import EventList from './EventList';
-import TicketList from './TicketList';
-import Register from './Register';
+import EventList from './components/EventList';
+import TicketList from './components/TicketList';
+import Register from './components/Register';
 
 const App = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
