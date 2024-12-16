@@ -8,11 +8,15 @@ ARG VITE_GOOGLE_CLIENT_ID
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY package.json . 
+COPY package.json .
 RUN npm install
 
 # Copy the rest of the app's files
 COPY . .
+
+# Build the app (make sure to replace the environment variable for build)
+RUN echo "VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}"
+RUN echo "VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}" > .env
 
 # Build the app
 RUN npm run build
