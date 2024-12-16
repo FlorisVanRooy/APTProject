@@ -6,16 +6,8 @@ const TicketList = ({ onSelectTicket }) => {
   useEffect(() => {
     // Fetch all tickets using the environment variable VITE_API_URL
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
-    fetch(apiUrl + '/tickets', {
-      method: 'GET',
-      credentials: 'include', // Needed if the server uses credentials
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
+    fetch(apiUrl + '/tickets',)
+      .then(response => response.json())
       .then(data => setTickets(data))
       .catch(error => console.error('Error fetching tickets:', error));
   }, []);
