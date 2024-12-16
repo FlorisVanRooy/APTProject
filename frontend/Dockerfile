@@ -1,28 +1,32 @@
-# Dockerfile for React app
-FROM node:18
+# Step 1: Use the official Node.js image as the base image
+FROM node:18 AS build
 
-# Define build argument
-ARG VITE_GOOGLE_CLIENT_ID
-
-# Set working directory
+# Step 2: Set the working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package.json .
+# Step 3: Copy the package.json and package-lock.json files to the working directory
+COPY ./frontend/package.json ./frontend/package-lock.json ./
+
+# Step 4: Install the dependencies
 RUN npm install
 
-# Copy the rest of the app's files
-COPY . .
+# Step 5: Copy the entire frontend project files into the container
+COPY ./frontend /app
 
-# Build the app (make sure to replace the environment variable for build)
-RUN echo "VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}"
-RUN echo "VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}" > .env
+# Step 6: Build the React app with the environment variable (VITE_GOOGLE_CLIENT_ID)
+ARG VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 
-# Build the app
 RUN npm run build
 
-# Expose the build directory
-EXPOSE 3000
+# Step 7: Set up the Nginx or serve server to serve the built app
+FROM nginx:alpine
 
-# Start the app
-CMD ["npm", "start"]
+# Step 8: Copy the build output from the previous stage to the Nginx container
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Step 9: Expose port 80
+EXPOSE 80
+
+# Step 10: Start the Nginx server to serve the app
+CMD ["nginx", "-g", "daemon off;"]
