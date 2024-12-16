@@ -18,13 +18,13 @@ ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 
 # Run build and check if the build directory is created
-RUN npm run build && ls -l /app/build
+RUN npm run build && ls -l /app/dist  # Changed to /app/dist since your build is outputting there
 
 # Step 7: Set up Nginx to serve the built app
 FROM nginx:alpine
 
 # Step 8: Copy the build output from the previous stage to the Nginx container
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html  # Changed from /app/build to /app/dist
 
 # Step 9: Expose port 80
 EXPOSE 80
