@@ -96,7 +96,8 @@ services:
     depends_on:
       - api-gateway
     environment:
-      VITE_API_URL: http://api-gateway:8083
+      - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}  # Pass as an environment variable at runtime
+      - VITE_API_URL=http://api-gateway:8083
 
 volumes:
  mongodb_event_data:
