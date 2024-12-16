@@ -1,11 +1,11 @@
 # Step 1: Use the official Node.js image as the base image
 FROM node:18 AS build
 
-# Step 2: Set the working directory
+# Step 2: Set the working directory for the build process
 WORKDIR /app
 
 # Step 3: Copy the package.json and package-lock.json files to the working directory
-COPY ./package.json ./package-lock.json ./
+COPY package.json package-lock.json ./
 
 # Step 4: Install the dependencies
 RUN npm install
@@ -19,7 +19,7 @@ ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 
 RUN npm run build
 
-# Step 7: Set up the Nginx or serve server to serve the built app
+# Step 7: Set up Nginx to serve the built app
 FROM nginx:alpine
 
 # Step 8: Copy the build output from the previous stage to the Nginx container
