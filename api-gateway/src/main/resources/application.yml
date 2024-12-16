@@ -24,6 +24,19 @@ spring:
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
   cloud:
     gateway:
+      globalfilters:
+        - name: AddResponseHeader
+          args:
+            name: Access-Control-Allow-Origin
+            value: "http://localhost:3000"
+        - name: AddResponseHeader
+          args:
+            name: Access-Control-Allow-Methods
+            value: "GET, POST, PUT, DELETE, OPTIONS"
+        - name: AddResponseHeader
+          args:
+            name: Access-Control-Allow-Headers
+            value: "Content-Type, Authorization"
       routes:
         - id: event-service
           uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
@@ -109,18 +122,6 @@ spring:
             - Method=POST
           filters:
             - SetPath=/api/registration
-            - name: AddResponseHeader
-              args:
-                name: Access-Control-Allow-Origin
-                value: "http://localhost:3000"
-            - name: AddResponseHeader
-              args:
-                name: Access-Control-Allow-Methods
-                value: "GET, POST, PUT, DELETE"
-            - name: AddResponseHeader
-              args:
-                name: Access-Control-Allow-Headers
-                value: "Content-Type, Authorization"
         
         - id: registration-service
           uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
