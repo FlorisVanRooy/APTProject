@@ -17,7 +17,8 @@ COPY . /app
 ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 
-RUN npm run build
+# Run build and check if the build directory is created
+RUN npm run build && ls -l /app/build
 
 # Step 7: Set up Nginx to serve the built app
 FROM nginx:alpine
