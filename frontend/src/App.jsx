@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleLogin } from '@react-oauth/google';  // For OAuth login
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';  // For OAuth login
 import EventList from './components/EventList';
 import TicketList from './components/TicketList';
 import Register from './components/Register';
@@ -39,6 +39,7 @@ const App = () => {
   };
 
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <div>
       <h1>Event Registration</h1>
 
@@ -60,6 +61,7 @@ const App = () => {
         </>
       )}
     </div>
+    </GoogleOAuthProvider>
   );
 };
 

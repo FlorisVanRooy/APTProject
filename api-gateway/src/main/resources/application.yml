@@ -109,6 +109,19 @@ spring:
             - Method=POST
           filters:
             - SetPath=/api/registration
+            - name: AddResponseHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: "http://localhost:3000"
+            - name: AddResponseHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: "GET, POST, PUT, DELETE"
+            - name: AddResponseHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: "Content-Type, Authorization"
+        
         - id: registration-service
           uri: http://${REGISTRATION_SERVICE_BASEURL:localhost:8081}
           predicates:

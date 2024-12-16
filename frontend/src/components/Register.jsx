@@ -28,7 +28,8 @@ const Register = ({ event, ticket }) => {
     };
 
     // POST request to the API Gateway (which forwards to registration-service)
-    fetch(`${import.meta.env.VITE_API_URL}/registrations`, {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
+    fetch(`${apiUrl}/registrations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const Register = ({ event, ticket }) => {
       />
       <input
         type="number"
-        placeholder="Amount"
+        placeholder="Quantity"
         value={userDetails.quantity}
         onChange={e => setUserDetails({ ...userDetails, quantity: e.target.value })}
       />
