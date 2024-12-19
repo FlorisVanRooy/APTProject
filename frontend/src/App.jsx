@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'; // For OAuth login
 import EventList from './components/EventList';
 import TicketList from './components/TicketList';
-import Register from './components/Register';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,14 +39,12 @@ const App = () => {
                 <ul>
                   <li><Link to="/events">Events</Link></li>
                   <li><Link to="/tickets">Tickets</Link></li>
-                  <li><Link to="/registrations">Registrations</Link></li>
                 </ul>
               </nav>
 
               <Routes>
                 <Route path="/events" element={<EventList />} />
                 <Route path="/tickets" element={<TicketList />} />
-                <Route path="/registrations" element={<Register />} />
               </Routes>
             </>
           )}

@@ -27,14 +27,14 @@ const Register = () => {
         for (const registration of data) {
           // Fetch event details if not already fetched
           if (!eventsMap[registration.eventCode]) {
-            const eventResponse = await fetch(`${apiUrl}/events/by-code/${registration.eventCode}?token=${token}`);
+            const eventResponse = await fetch(`${apiUrl}/events/by-code/${registration.eventCode}`);
             const eventData = await eventResponse.json();
             eventsMap[registration.eventCode] = eventData;
           }
   
           // Fetch ticket details if not already fetched
           if (!ticketsMap[registration.ticketCode]) {
-            const ticketResponse = await fetch(`${apiUrl}/tickets/by-code/${registration.ticketCode}?token=${token}`);
+            const ticketResponse = await fetch(`${apiUrl}/tickets/by-code/${registration.ticketCode}`);
             const ticketData = await ticketResponse.json();
             ticketsMap[registration.ticketCode] = ticketData;
           }
