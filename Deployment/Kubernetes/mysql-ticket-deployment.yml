@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-ticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-ticket
+  template:
+    metadata:
+      labels:
+        app: mysql-ticket
+    spec:
+      containers:
+        - name: mysql-ticket
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: abc123
+          volumeMounts:
+            - name: mysql-ticket-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-ticket-storage
+          persistentVolumeClaim:
+            claimName: mysql-ticket-pvc

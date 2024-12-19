@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-service
+  template:
+    metadata:
+      labels:
+        app: ticket-service
+    spec:
+      containers:
+        - name: ticket-service
+          image: florisvanrooy/ticket-service
+          ports:
+            - containerPort: 8082
+          env:
+            - name: MYSQL_DB_USERNAME
+              value: root
+            - name: MYSQL_DB_PASSWORD
+              value: abc123
+            - name: MYSQL_DB_HOST
+              value: mysql-ticket
+            - name: MYSQL_DB_PORT
+              value: "3306"

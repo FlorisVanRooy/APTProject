@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registration-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registration-service
+  template:
+    metadata:
+      labels:
+        app: registration-service
+    spec:
+      containers:
+        - name: registration-service
+          image: florisvanrooy/registration-service
+          ports:
+            - containerPort: 8081
+          env:
+            - name: EVENT_SERVICE_BASEURL
+              value: "http://event-service:8080"
+            - name: TICKET_SERVICE_BASEURL
+              value: "http://ticket-service:8082"
+            - name: MYSQL_DB_USERNAME
+              value: root
+            - name: MYSQL_DB_PASSWORD
+              value: abc123
+            - name: MYSQL_DB_HOST
+              value: mysql-registration
+            - name: MYSQL_DB_PORT
+              value: "3306"

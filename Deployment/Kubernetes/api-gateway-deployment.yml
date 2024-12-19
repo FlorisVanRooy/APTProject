@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: florisvanrooy/fvr-api-gateway
+          ports:
+            - containerPort: 8083
+          env:
+            - name: EVENT_SERVICE_BASEURL
+              value: "event-service:8080"
+            - name: REGISTRATION_SERVICE_BASEURL
+              value: "registration-service:8081"
+            - name: TICKET_SERVICE_BASEURL
+              value: "ticket-service:8082"
