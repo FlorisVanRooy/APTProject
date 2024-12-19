@@ -1,81 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Register = ({ event, ticket }) => {
-  const [userDetails, setUserDetails] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    quantity: 1,
-  });
+const Register = () => {
+  const [registrations, setRegistrations] = useState([]);
+  const [events, setEvents] = useState({});
+  const [tickets, setTickets] = useState({});
 
-  const handleRegister = () => {
-    // Get the token from localStorage
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
     const token = localStorage.getItem('access_token');
-    
+  
     if (!token) {
       alert('You need to log in first!');
       return;
     }
-
-    // Prepare the registration data
-    const reservationData = {
-      firstName: userDetails.firstName,
-      lastName: userDetails.lastName,
-      email: userDetails.email,
-      quantity: userDetails.quantity,
-      ticketCode: ticket.ticketCode,  // Ensure ticketCode is sent
-      eventCode: event.eventCode,  // Ensure eventCode is sent
-    };
-
-    // POST request to the API Gateway (which forwards to registration-service)
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8083'; // Fallback to localhost for local dev
-    fetch(`${apiUrl}/registrations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,  // Include the token in the header
-      },
-      body: JSON.stringify(reservationData),
-    })
-      .then(response => response.json())
-      .then(data => {
-        alert('Successfully registered for the event!');
-        console.log('Registration response:', data);
+  
+    // Fetch registrations
+    fetch(`${apiUrl}/registrations?token=${token}`) // Token is sent as a query parameter
+      .then((response) => response.json())
+      .then(async (data) => {
+        setRegistrations(data);
+  
+        // Fetch associated event and ticket details
+        const eventsMap = {};
+        const ticketsMap = {};
+  
+        for (const registration of data) {
+          // Fetch event details if not already fetched
+          if (!eventsMap[registration.eventCode]) {
+            const eventResponse = await fetch(`${apiUrl}/events/by-code/${registration.eventCode}?token=${token}`);
+            const eventData = await eventResponse.json();
+            eventsMap[registration.eventCode] = eventData;
+          }
+  
+          // Fetch ticket details if not already fetched
+          if (!ticketsMap[registration.ticketCode]) {
+            const ticketResponse = await fetch(`${apiUrl}/tickets/by-code/${registration.ticketCode}?token=${token}`);
+            const ticketData = await ticketResponse.json();
+            ticketsMap[registration.ticketCode] = ticketData;
+          }
+        }
+  
+        setEvents(eventsMap);
+        setTickets(ticketsMap);
       })
-      .catch(error => {
-        console.error('Error registering:', error);
-        alert('Failed to register for the event.');
-      });
-  };
+      .catch((error) => console.error('Error fetching registrations:', error));
+  }, []);
+  
 
   return (
     <div>
-      <h2>Register for {event.name}</h2>
-      <input
-        type="text"
-        placeholder="First Name"
-        value={userDetails.firstName}
-        onChange={e => setUserDetails({ ...userDetails, firstName: e.target.value })}
-      />
-      <input
-        type="text"
-        placeholder="Last Name"
-        value={userDetails.lastName}
-        onChange={e => setUserDetails({ ...userDetails, lastName: e.target.value })}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={userDetails.email}
-        onChange={e => setUserDetails({ ...userDetails, email: e.target.value })}
-      />
-      <input
-        type="number"
-        placeholder="Quantity"
-        value={userDetails.quantity}
-        onChange={e => setUserDetails({ ...userDetails, quantity: e.target.value })}
-      />
-      <button onClick={handleRegister}>Register</button>
+      <h2>Registrations</h2>
+      {registrations.length === 0 ? (
+        <p>No registrations found.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Quantity</th>
+              <th>Event Name</th>
+              <th>Ticket Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registrations.map((registration) => (
+              <tr key={registration.id}>
+                <td>{registration.firstName}</td>
+                <td>{registration.lastName}</td>
+                <td>{registration.email}</td>
+                <td>{registration.quantity}</td>
+                <td>{events[registration.eventCode]?.name || 'Loading...'}</td>
+                <td>{tickets[registration.ticketCode]?.type || 'Loading...'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
