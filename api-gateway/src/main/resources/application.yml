@@ -22,8 +22,18 @@ spring:
         jwt:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+  data:
+    redis:
+      host: localhost
+      port: 6379
   cloud:
     gateway:
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter:
+              replenishRate: 15
+              burstCapacity: 30
       routes:
         - id: event-service
           uri: http://${EVENT_SERVICE_BASEURL:localhost:8080}
